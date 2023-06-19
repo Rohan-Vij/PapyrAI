@@ -25,7 +25,16 @@ client = MongoClient(
 db = client["papyrai"]
 users = db["users"]
 
-# User management routes
+# Routes
+
+@app.route('/')
+def index():
+    """
+    Renders the index page.
+
+    """
+
+    return render_template('index.html')
 
 
 @app.route('/signup', methods=["GET", "POST"])
@@ -45,7 +54,7 @@ def signup():
         password = request.form["password"]
 
         if users.find_one({"email": email}):
-            return render_template('index.html', message="An account with that email address already exists.")
+            return render_template('signup.html', message="An account with that email address already exists.")
         else:
             hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
             users.insert_one(
@@ -54,7 +63,7 @@ def signup():
 
             return redirect(url_for("home"))
 
-    return render_template('index.html')
+    return render_template('signup.html')
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -124,3 +133,7 @@ def before_request():
     g.email = None
     if "email" in session:
         g.email = session['email']
+
+# Run the Flask application
+if __name__ == '__main__':
+    app.run(debug=True)
