@@ -1,10 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Index</title>
-</head>
-<body>
-    <h1>Welcome to the Index Page</h1>
-    <p>Please <a href="/signup">Sign up</a> or <a href="/login">Log in</a></p>
-</body>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/main.css') }}"
+    />
+  </head>
+  <body>
+    <div class="center-container">
+      <div class="center-content">
+        <h1>Welcome to the Index Page</h1>
+        <p>
+          Please <a href="/signup">Sign up</a> or <a href="/login">Log in</a>
+        </p>
+      </div>
+    </div>
+  </body>
 </html>
