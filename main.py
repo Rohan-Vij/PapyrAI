@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, url_for, redirect, session, g
 from pymongo import MongoClient
 import bcrypt
 
+from datetime import datetime
 from dotenv import load_dotenv
 import os
 
@@ -58,7 +59,7 @@ def signup():
         else:
             hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
             users.insert_one(
-                {'name': name, 'email': email, 'password': hashed})
+                {'name': name, 'email': email, 'password': hashed, 'activity': []})
             session['email'] = email
 
             return redirect(url_for("home"))
@@ -121,6 +122,29 @@ def logout():
         return render_template("signout.html")
     else:
         return render_template('index.html')
+    
+# Link tracking
+
+@app.route('/c', methods=["GET"])
+def clicked():
+    """
+    Handles link tracking.
+    """
+    email = request.args.get("email")
+    paper_id = request.args.get("paper_id")
+    paper_topics = request.args.get("paper_topics")
+    redirect_url = request.args.get("redirect")
+
+    click_object = {
+        "email": email,
+        "paper_id": paper_id,
+        "paper_topics": paper_topics,
+        "date": datetime.now()
+    }
+
+    users.update_one({"email": email}, {"$push": {"activity": click_object}})
+
+    return redirect(redirect_url)
 
 
 @app.before_request
@@ -133,6 +157,7 @@ def before_request():
     g.email = None
     if "email" in session:
         g.email = session['email']
+
 
 # Run the Flask application
 if __name__ == '__main__':
