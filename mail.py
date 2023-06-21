@@ -3,6 +3,8 @@ import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+from datetime import datetime
+
 from dotenv import load_dotenv
 import os
 
@@ -14,7 +16,7 @@ def send_email(receiver_email):
     password = os.getenv('EMAIL_PASSWORD')
 
     message = MIMEMultipart("alternative")
-    message["Subject"] = "multipart test"
+    message["Subject"] = f"Your Weekly Papyr AI Newsletter - {datetime.today().strftime('%m-%d-%y')}"
     message["From"] = sender_email
     message["To"] = receiver_email
 
