@@ -8,15 +8,43 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 
+
+def data_to_plaintext(data):
+    def paper_to_plaintext(paper):
+        return f"""\
+{paper["title"]}
+{'-' * len(paper["title"])}
+{paper["summary"]}
+
+Authors: {', '.join(paper['authors'])}
+Published: {paper['published'].strftime('%B %Y')}
+Keywords: {', '.join(paper['keywords'])}"""
+
+    return f"""\
+Discover Custom Research Papers with Papyr AI
+==============================================
+
+Stay informed about the latest research in your field!
+
+""" + "\n".join(
+        paper_to_plaintext(paper) for paper in data
+    )
+
+def data_to_html(data):
+    pass
+
+
 def send_email(receiver_email):
     # loading env variables
     load_dotenv()
 
     sender_email = "papyrainewsletter@gmail.com"
-    password = os.getenv('EMAIL_PASSWORD')
+    password = os.getenv("EMAIL_PASSWORD")
 
     message = MIMEMultipart("alternative")
-    message["Subject"] = f"Your Weekly Papyr AI Newsletter - {datetime.today().strftime('%m-%d-%y')}"
+    message[
+        "Subject"
+    ] = f"Your Weekly Papyr AI Newsletter - {datetime.today().strftime('%m-%d-%y')}"
     message["From"] = sender_email
     message["To"] = receiver_email
 
@@ -90,10 +118,19 @@ def send_email(receiver_email):
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
         server.login(sender_email, password)
-        server.sendmail(
-            sender_email, receiver_email, message.as_string()
-        )
+        server.sendmail(sender_email, receiver_email, message.as_string())
 
-# Call the function to send the email
-receiver_email = "rohankvij@gmail.com"  # Replace with the desired receiver email
-send_email(receiver_email)
+
+# # Call the function to send the email
+# receiver_email = "rohankvij@gmail.com"  # Replace with the desired receiver email
+# send_email(receiver_email)
+
+from api import standardize_arXiv
+import requests, xmltodict, json
+
+
+with open("tmp/arXiv_schema_clean.json", "r") as fin:
+    data = json.load(fin)
+    data["published"] = datetime.now()
+
+print(data_to_plaintext([data]))
