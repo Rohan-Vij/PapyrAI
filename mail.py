@@ -9,17 +9,27 @@ from dotenv import load_dotenv
 import os
 
 
-def data_to_plaintext(data):
-    def paper_to_plaintext(paper):
-        return f"""\
+newline = "\n"
+
+
+def paper_to_plaintext(paper):
+    paper_str = f"""\
 {paper["title"]}
 {'-' * len(paper["title"])}
 {paper["summary"]}
 
+Links:
+{newline.join(f' - {link["type"].upper()}: {link["link"]}' for link in paper["links"])}
 Authors: {', '.join(paper['authors'])}
-Published: {paper['published'].strftime('%B %Y')}
-Keywords: {', '.join(paper['keywords'])}"""
+Published: {paper['published'].strftime('%B %Y')}"""
 
+    if len(paper["keywords"]) > 0:
+        paper_str += f"\nKeywords: {', '.join(paper['keywords'])}"
+
+    return paper_str
+
+
+def data_to_plaintext(data):
     return f"""\
 Discover Custom Research Papers with Papyr AI
 ==============================================
@@ -30,8 +40,40 @@ Stay informed about the latest research in your field!
         paper_to_plaintext(paper) for paper in data
     )
 
+
+def paper_to_html(paper):
+    doi_link = next(link for link in paper["links"] if link["type"] == "doi")
+    other_links = [link for link in paper["links"] if link["type"] != "doi"]
+
+    return f"""\
+      <div style="background-color: #ffffff; padding: 20px; margin-bottom: 20px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <!-- <img src="article1-thumbnail.jpg" alt="Article 1 Thumbnail" style="width: 100%; max-width: 300px; height: auto; margin-bottom: 10px;"> -->
+        <a style="font-size: 20px; font-weight: bold; color: #3f51b5;" href="{doi_link["link"]}">{paper['title']}</a>
+        <p style="font-size: 10px; font-weight: bold; margin-top: 5px; margin-bottom: 10px; color: #757575;" href="{paper['doi']}">Alternative Links: {" | ".join(f'<a style="color: #757575;" href="{link["link"]}">{link["type"]}</a>' for link in other_links)}</p>
+        <p style="font-size: 16px; line-height: 1.5; color: #616161;">{paper['summary']}</p>
+        <p style="font-size: 14px; margin-top: 10px; color: #757575;"><strong>Authors:</strong> {', '.join(paper['authors'])}</p>
+        <p style="font-size: 14px; margin-top: 5px; color: #757575;"><strong>Published:</strong> {paper['published'].strftime('%B %Y')}</p>
+        {f'<p style="font-size: 14px; margin-top: 5px; color: #757575;"><strong>Keywords:</strong> {", ".join(paper["keywords"])}</p>' if len(paper["keywords"]) > 0 else ""}
+      </div>"""
+
+
 def data_to_html(data):
-    pass
+    return f"""\
+      <html>
+      <body style="margin: 0; padding: 0; font-family: 'Roboto', Arial, sans-serif;">
+      <div style="width: 100%; max-width: 600px; margin: 0 auto; background-color: #fafafa; padding: 20px; font-family: 'Roboto', Arial, sans-serif;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <h1 style="font-size: 24px; color: #3f51b5;">Discover Research Papers with Papyr AI</h1>
+          <p style="font-size: 16px; color: #616161;">Stay informed about the latest research in your field!</p>
+        </div>
+
+        <div style="display: block; margin-bottom: 30px;">
+          {newline.join(paper_to_html(paper) for paper in data)}
+        </div>
+      </div>
+      </body>
+      </html>
+      """
 
 
 def send_email(receiver_email):
@@ -133,4 +175,4 @@ with open("tmp/arXiv_schema_clean.json", "r") as fin:
     data = json.load(fin)
     data["published"] = datetime.now()
 
-print(data_to_plaintext([data]))
+print(data_to_html([data]))
