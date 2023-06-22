@@ -19,9 +19,21 @@ def to_list(obj):
 
 
 def standardize_arXiv(raw_data):
-    # TODO: links
+    doi = raw_data["arxiv:doi"]["#text"]
 
-    doi = raw_data["arxiv:doi"]["#text"]        
+    # DOI defaults to building the url from scratch (will be updated later on if provided by api)
+    links = [{ "type": "doi", "link": f"https://www.doi.org/{doi}" }]
+
+    for link in raw_data["link"]:
+        if "@title" in link and link["@title"] == "doi":
+            links.pop(0) # remove existing doi
+            links.append({ "type": "doi", "link": link["@href"] })
+        elif "@title" in link and link["@title"] == "pdf":
+            links.append({ "type": "pdf", "link": link["@href"] })
+        elif "@type" in link and link["@type"] == "text/html":
+            links.append({ "type": "html", "link": link["@href"] })
+        else:
+            print("WARNING: Unrecognized link \"" + json.dumps(link) + "\"")
 
     return {
         "doi": doi,
@@ -30,13 +42,26 @@ def standardize_arXiv(raw_data):
         "keywords": [], # TODO: use ChatGPT to generate these
         "summary": raw_data["summary"].replace("\n", " "),
         "published": datetime.fromisoformat(raw_data["published"]),
-        "link": f"https://www.doi.org/{doi}"
+        "links": links
     }
 
 def standardize_springer(raw_data):
-    # TODO: links
-
     doi = raw_data["doi"]
+
+    # DOI defaults to building the url from scratch (will be updated later on if provided by api)
+    links = [{ "type": "doi", "link": f"https://www.doi.org/{doi}" }]
+    print(raw_data["url"])
+
+    for link in raw_data["url"]:
+        if "doi.org" in link["value"]:
+            links.pop(0) # remove existing doi
+            links.append({ "type": "doi", "link": link["value"] })
+        elif link["format"] == "pdf":
+            links.append({ "type": "pdf", "link": link["value"] })
+        elif link["format"] == "html":
+            links.append({ "type": "html", "link": link["value"] })
+        else:
+            print("WARNING: Unrecognized link \"" + json.dumps(link) + "\"")
 
     return {
         "doi": doi,
@@ -45,19 +70,19 @@ def standardize_springer(raw_data):
         "keywords": raw_data["keyword"],
         "summary": raw_data["abstract"],
         "published": datetime.strptime(raw_data["publicationDate"], "%Y-%m-%d"),
-        "link": f"https://www.doi.org/{doi}"
+        "links": links
     }
 
 
 if __name__ == "__main__":
   load_dotenv()
 
-  arXiv_api_response = requests.get(
-      "http://export.arxiv.org/api/query?search_query=all:electron"
-  )
-  json_arXiv_api_response = xmltodict.parse(arXiv_api_response.text)
-  entries = json_arXiv_api_response["feed"]["entry"]
-  print(json.dumps(standardize_arXiv(entries[0]), indent=4, default=str))
+  # arXiv_api_response = requests.get(
+  #     "http://export.arxiv.org/api/query?search_query=all:electron"
+  # )
+  # json_arXiv_api_response = xmltodict.parse(arXiv_api_response.text)
+  # entries = json_arXiv_api_response["feed"]["entry"]
+  # print(json.dumps(standardize_arXiv(entries[0]), indent=4, default=str))
 
 
   print("---------------------------")
