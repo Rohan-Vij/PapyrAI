@@ -8,7 +8,7 @@ We welcome contributions from the community to help improve and enhance PapyrAI.
 
 1. Fork the repository and clone it to your local machine.
 ```
-git clone [https://github.com/Rohan-Vij/PapyrAI.git](https://github.com/Rohan-Vij/PapyrAI.git)
+git clone https://github.com/Rohan-Vij/PapyrAI.git
 ```
 
 2. Create a new branch for your contribution.
