@@ -50,7 +50,6 @@ def standardize_springer(raw_data):
 
     # DOI defaults to building the url from scratch (will be updated later on if provided by api)
     links = [{ "type": "doi", "link": f"https://www.doi.org/{doi}" }]
-    print(raw_data["url"])
 
     for link in raw_data["url"]:
         if "doi.org" in link["value"]:

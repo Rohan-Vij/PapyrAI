@@ -12,14 +12,33 @@
       type="text/css"
       href="{{ url_for('static', filename='styles/startpages.css') }}"
     />
+
   </head>
   <body>
     <div class="center-container">
       <div class="center-content">
-        <h1>Welcome to the Home Page</h1>
-        <p>Logged in as: {{ g.email }}</p>
-        <a href="/logout">Logout</a>
+        <h1 style="margin-bottom: 4px;">Home</h1>
+        <p style="font-size: 11px; color: #a8a8a8;">Logged in as: {{ g.email }}</p>
+        <br>
+        <p>Can't wait for next week's newsletter?</p>
+        <button id="fetchButton" class="btn">Send one now!</button>
+        <br>
+        <a style="color: #a8a8a8;" href="/logout">Logout</a>
       </div>
     </div>
   </body>
+  <script>
+    document.getElementById('fetchButton').addEventListener('click', fetchData);
+
+    function fetchData() {
+      alert("This might take a couple seconds, so don't close the tab...");
+      fetch('http://localhost:5000/api')
+        .then(response => alert("Newsletter sent!"))
+        .catch(error => {
+          // Handle any errors
+          console.error('Error:', error);
+        });
+    }
+
+  </script>
 </html>

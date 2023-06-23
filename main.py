@@ -58,8 +58,6 @@ def signup():
         password = request.form["password"]
         topics = request.form["selected-topics"].split(",")
 
-        print(topics)
-
         if users.find_one({"email": email}):
             return render_template('signup.html', message="An account with that email address already exists.")
         else:
@@ -122,10 +120,13 @@ def use_api():
         papers_per_topic = number_papers_to_get // 4
 
     # Retrieve the last five clicked topics
-    previously_clicked = user_info["activity"][-5:] if len(user_info["activity"]) > 5 else user_info["activity"]
+    # previously_clicked = user_info["activity"][-5:] if len(user_info["activity"]) > 5 else user_info["activity"]
+    previously_clicked = user_info["activity"]
+
+    print(previously_clicked)
 
     # Extract the topics from the previously clicked papers
-    previous_topics = [topic for item in previously_clicked for topic in item["paper_topics"]]
+    previous_topics = [activity_record["paper_topics"] for activity_record in previously_clicked]
 
     papers = []
 
@@ -138,7 +139,6 @@ def use_api():
         entries = json_arXiv_api_response["feed"]["entry"]
 
         for arXiv_paper in entries:
-            print(arXiv_paper)
             try:
                 # Standardize the arXiv paper data
                 arXiv_paper = api.standardize_arXiv(arXiv_paper)
@@ -169,8 +169,6 @@ def use_api():
     # Extract the titles of the retrieved papers
     titles = [paper["title"] for paper in papers]
 
-    print(titles)
-
     # Create an instance of the GPT module
     gpt_instance = gpt.GPTModule()
 
@@ -197,9 +195,6 @@ def use_api():
 
     # Send the recommended papers via email
     mail.send_email(user_info["name"], user_info["email"], recommended_papers)
-
-    # Update the user's activity with the recommendations
-    users.update_one({"email": session["email"]}, {"$push": {"activity": {"topics": topics, "papers": recommended_papers}}})
 
     return redirect(url_for("home"))
 
