@@ -41,7 +41,7 @@ def standardize_arXiv(raw_data):
         "authors": [author["name"] for author in to_list(raw_data["author"])],
         "keywords": [], # TODO: use ChatGPT to generate these
         "summary": raw_data["summary"].replace("\n", " "),
-        "published": datetime.fromisoformat(raw_data["published"]),
+        "published": datetime.fromisoformat(raw_data["published"].rstrip('Z')),
         "links": links
     }
 

@@ -6,6 +6,10 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 
+import xmltodict
+import json
+import requests
+
 # loading env variables
 load_dotenv()
 
@@ -97,6 +101,26 @@ def login():
 
     return render_template("login.html")
 
+import api
+
+@app.route('/api')
+def use_api():
+    arXiv_api_response = requests.get(
+      "http://export.arxiv.org/api/query?search_query=all:electron"
+    )
+    json_arXiv_api_response = xmltodict.parse(arXiv_api_response.text)
+    entries = json_arXiv_api_response["feed"]["entry"]
+    print(json.dumps(api.standardize_arXiv(entries[0]), indent=4, default=str))
+
+    springer_api_key = os.getenv("springer_api_key")
+    springer_api_response = requests.get(
+        f"https://api.springernature.com/meta/v2/json?api_key={springer_api_key}&q=keyword%3Aelectron&s=1&p=10"
+    )
+
+    records = springer_api_response.json()["records"]
+    print(json.dumps(api.standardize_springer(records[0]), indent=4, default=str))
+
+    
 
 @app.route('/home')
 def home():
