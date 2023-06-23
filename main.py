@@ -53,13 +53,16 @@ def signup():
         name = request.form["name"]
         email = request.form["email"]
         password = request.form["password"]
+        topics = request.form["selected-topics"].split(",")
+
+        print(topics)
 
         if users.find_one({"email": email}):
             return render_template('signup.html', message="An account with that email address already exists.")
         else:
             hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
             users.insert_one(
-                {'name': name, 'email': email, 'password': hashed, 'activity': []})
+                {'name': name, 'email': email, 'password': hashed, 'topics': topics, 'activity': []})
             session['email'] = email
 
             return redirect(url_for("home"))

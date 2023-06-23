@@ -111,13 +111,13 @@ def send_email(receiver_email, data):
 
 
 # Call the function to send the email
-import json
-receiver_email = "rohankvij@gmail.com"  # Replace with the desired receiver email
+# import json
+# receiver_email = "rohankvij@gmail.com"  # Replace with the desired receiver email
 
-with open("tmp/arXiv_schema_clean.json", "r") as fin:
-    data = json.load(fin)
-    data["published"] = datetime.now()
-    send_email(receiver_email, [data])
+# with open("tmp/arXiv_schema_clean.json", "r") as fin:
+#     data = json.load(fin)
+#     data["published"] = datetime.now()
+#     send_email(receiver_email, [data])
 
 
 # with open("tmp/arXiv_schema_clean.json", "r") as fin:
