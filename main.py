@@ -1,6 +1,6 @@
 import modules.api as api
 import modules.mail as mail
-import modules.gpt gpt
+import modules.gpt as gpt
 from flask import Flask, render_template, request, url_for, redirect, session, g
 from pymongo import MongoClient
 import bcrypt
@@ -225,6 +225,16 @@ def home():
     user_activity = user_info["activity"]
 
     return render_template("home.html", activity=user_activity)
+
+@app.before_request
+def before_request():
+    """
+    Global function executed before each request.
+    It sets the 'g.email' variable to the user's email if they are logged in.
+    """
+    g.email = None
+    if "email" in session:
+        g.email = session['email']
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -7,10 +7,19 @@
       type="text/css"
       href="{{ url_for('static', filename='styles/main.css') }}"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/startpages.css') }}"
+    />
   </head>
   <body>
-    <h1>Welcome to the Home Page</h1>
-    <p>Logged in as: {{ g.email }}</p>
-    <a href="/logout">Logout</a>
+    <div class="center-container">
+      <div class="center-content">
+        <h1>Welcome to the Home Page</h1>
+        <p>Logged in as: {{ g.email }}</p>
+        <a href="/logout">Logout</a>
+      </div>
+    </div>
   </body>
 </html>
