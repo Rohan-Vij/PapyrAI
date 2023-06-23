@@ -87,7 +87,7 @@ def send_email(receiver_email, data):
     message[
         "Subject"
     ] = f"Your Weekly Papyr AI Newsletter - {datetime.today().strftime('%m-%d-%y')}"
-    message["From"] = sender_email
+    message["From"] = f"PapyrAI Newsletter {sender_email}"
     message["To"] = receiver_email
 
     # Create the plain-text and HTML version of your message

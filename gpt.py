@@ -35,6 +35,31 @@ class GPTModule:
         response = self.__chat_with_gpt(prompt)
 
         return response
+    
+    def recommend(self, titles, previous_topics):
+        topics_string = ""
+        for topic in previous_topics:
+            topics_string += f"{topic}, "
+
+        titles_string = ""
+        for i, title in enumerate(titles):
+            titles_string += f"{i+1}. {title}\n"
+
+        prompt = f"""
+        I am a scientist who is interested in {topics_string}.
+
+        I am looking at {len(titles_string)} research papers with the titles:
+        {titles_string}
+
+        Please reccomend me 5 papers that I should read next.
+        Do not give me the titles of the paper, only the number in the list.
+        Give me output in the format:
+        num1,num2,num3,num4,num5
+        """
+
+        response = self.__chat_with_gpt(prompt)
+
+        return response.split(",")
 
 # Can you please read through it and give me 3 key words that describe the paper.
 # They should be very simple and intepretable to someone who knows nothing about science.
