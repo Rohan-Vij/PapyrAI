@@ -1,6 +1,6 @@
-import api
-import mail
-import gpt
+import modules.api as api
+import modules.mail as mail
+import modules.gpt gpt
 from flask import Flask, render_template, request, url_for, redirect, session, g
 from pymongo import MongoClient
 import bcrypt
