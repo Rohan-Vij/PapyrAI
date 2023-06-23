@@ -113,7 +113,7 @@ def use_api():
     topics = []
 
     # Divide the number of papers to get among the selected topics
-    if len(user_info["topics"]) >= 4:
+    if len(user_info["topics"]) < 4:
         topics = user_info["topics"]
         papers_per_topic = number_papers_to_get // len(topics)
     else:
@@ -125,7 +125,7 @@ def use_api():
     previously_clicked = user_info["activity"][-5:] if len(user_info["activity"]) > 5 else user_info["activity"]
 
     # Extract the topics from the previously clicked papers
-    previous_topics = [topic for item in previously_clicked for topic in item["topics"]]
+    previous_topics = [topic for item in previously_clicked for topic in item["paper_topics"]]
 
     papers = []
 
@@ -196,7 +196,7 @@ def use_api():
             link["link"] = f"https://127.0.01:5000/c?email={user_info['email']}&paper_id={paper['doi']}&paper_topics={paper['keywords'][0]}&link={temp_link}"
 
     # Send the recommended papers via email
-    mail.send_email(user_info["email"], recommended_papers)
+    mail.send_email(user_info["name"], user_info["email"], recommended_papers)
 
     # Update the user's activity with the recommendations
     users.update_one({"email": session["email"]}, {"$push": {"activity": {"topics": topics, "papers": recommended_papers}}})

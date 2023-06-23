@@ -57,7 +57,7 @@ def paper_to_html(paper):
       </div>"""
 
 
-def data_to_html(data):
+def data_to_html(name, data):
     return f"""\
       <html>
       <body style="margin: 0; padding: 0; font-family: 'Roboto', Arial, sans-serif;">
@@ -65,6 +65,7 @@ def data_to_html(data):
         <div style="text-align: center; margin-bottom: 20px;">
           <h1 style="font-size: 24px; color: #3f51b5;">Discover Research Papers with Papyr AI</h1>
           <p style="font-size: 16px; color: #616161;">Stay informed about the latest research in your field!</p>
+          <p style="font-size: 14px; color: #616161;">Weekly digest for {name}</p>
         </div>
 
         <div style="display: block; margin-bottom: 30px;">
@@ -76,7 +77,7 @@ def data_to_html(data):
       """
 
 
-def send_email(receiver_email, data):
+def send_email(name, receiver_email, data):
     # loading env variables
     load_dotenv()
 
@@ -92,7 +93,7 @@ def send_email(receiver_email, data):
 
     # Create the plain-text and HTML version of your message
     text = data_to_plaintext(data)
-    html = data_to_html(data)
+    html = data_to_html(name, data)
 
     # Turn these into plain/html MIMEText objects
     part1 = MIMEText(text, "plain")
