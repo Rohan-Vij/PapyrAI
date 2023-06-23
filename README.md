@@ -4,7 +4,7 @@ Experience hassle-free research paper recommendations tailored to your interests
 
 ## How to Contribute
 
-We welcome contributions from the community to help improve and enhance the Research Paper Recommendation System. If you're interested in contributing, please follow the guidelines below:
+We welcome contributions from the community to help improve and enhance PapyrAI. If you're interested in contributing, please follow the guidelines below:
 
 1. Fork the repository and clone it to your local machine.
 ```
