@@ -129,6 +129,9 @@ def logout():
 def clicked():
     """
     Handles link tracking.
+
+    Example URL:
+    https://127.0.01:5000/c?email=example@example.com&paper_id=123&paper_topics=topic1,topic2&redirect=example.com
     """
     email = request.args.get("email")
     paper_id = request.args.get("paper_id")
