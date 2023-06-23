@@ -3,50 +3,145 @@
   <head>
     <title>Signup</title>
 
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/main.css') }}"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/startpages.css') }}"
+    />
+
     <script>
       function updateSelectedTopics() {
-        var checkboxes = document.querySelectorAll('input[name="topic"]:checked');
+        var checkboxes = document.querySelectorAll(
+          'input[name="topic"]:checked'
+        );
         var selectedTopics = Array.from(checkboxes).map(function (checkbox) {
           return checkbox.value;
         });
-        document.getElementById('selected-topics').value = selectedTopics.join(',');
+        document.getElementById("selected-topics").value =
+          selectedTopics.join(",");
       }
     </script>
   </head>
   <body>
-    <h1>Signup</h1>
-    <form method="POST" action="/signup">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" required /><br /><br />
+    <div class="center-container">
+      <div class="center-content">
+        <h1>Signup</h1>
+        <form method="POST" action="/signup">
+          <div class="form__group">
+            <label for="name" class="form__label">Name</label>
+            <input
+              type="text"
+              class="form__field"
+              id="name"
+              name="name"
+              required
+            />
+          </div>
 
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required /><br /><br />
+          <div class="form__group">
+            <label for="email" class="form__label">Email</label>
+            <input
+              type="email"
+              class="form__field"
+              id="email"
+              name="email"
+              required
+            />
+          </div>
 
-      <label for="password">Password:</label>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        required
-      /><br /><br />
+          <div class="form__group">
+            <label for="password" class="form__label">Password</label>
+            <input
+              type="password"
+              class="form__field"
+              id="password"
+              name="password"
+              required
+            />
+          </div>
 
-      <label>Topics of Interest:</label><br />
-      <input type="checkbox" name="topic" value="topic1" onchange="updateSelectedTopics()" />
-      <label>Topic 1</label><br />
-      <input type="checkbox" name="topic" value="topic2" onchange="updateSelectedTopics()" />
-      <label>Topic 2</label><br />
-      <input type="checkbox" name="topic" value="topic3" onchange="updateSelectedTopics()" />
-      <label>Topic 3</label><br />
+          <label>Topics of Interest</label><br />
 
-      <input type="hidden" id="selected-topics" name="selected-topics" />
+          <div class="topics-invis-grid">
+            <div>
+              <input
+                type="checkbox"
+                name="topic"
+                value="topic1"
+                onchange="updateSelectedTopics()"
+              />
+              <label>Topic 1</label><br />
+            </div>
 
-      <input type="submit" value="Sign Up" />
-    </form>
+            <div>
+              <input
+                type="checkbox"
+                name="topic"
+                value="topic2"
+                onchange="updateSelectedTopics()"
+              />
+              <label>Topic 2</label><br />
+            </div>
 
-    {% if message %}
-    <p>{{ message }}</p>
-    {% endif %}
+            <div>
+              <input
+                type="checkbox"
+                name="topic"
+                value="topic3"
+                onchange="updateSelectedTopics()"
+              />
+              <label>Topic 3</label><br />
+            </div>
 
-    <p>Already have an account? <a href="/login">Log in</a></p>
+            <div>
+              <input
+                type="checkbox"
+                name="topic"
+                value="topic1"
+                onchange="updateSelectedTopics()"
+              />
+              <label>Topic 1</label><br />
+            </div>
+
+            <div>
+              <input
+                type="checkbox"
+                name="topic"
+                value="topic2"
+                onchange="updateSelectedTopics()"
+              />
+              <label>Topic 2</label><br />
+            </div>
+
+            <div>
+              <input
+                type="checkbox"
+                name="topic"
+                value="topic3"
+                onchange="updateSelectedTopics()"
+              />
+              <label>Topic 3</label><br />
+              <br />
+            </div>
+          </div>
+
+          <input type="hidden" id="selected-topics" name="selected-topics" />
+
+          <input type="submit" class="btn" value="Sign Up" />
+        </form>
+
+        {% if message %}
+        <p>{{ message }}</p>
+        {% endif %}
+
+        <p>Already have an account? <a href="/login">Log in</a></p>
+      </div>
+    </div>
   </body>
 </html>
