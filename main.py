@@ -14,6 +14,7 @@ import json
 import requests
 
 import random
+import urllib.parse
 
 # Loading environment variables
 load_dotenv()
@@ -191,7 +192,7 @@ def use_api():
         for link in paper["links"]:
             temp_link = link["link"]
             # Modify the link to include user-specific data for tracking purposes
-            link["link"] = f"https://127.0.01:5000/c?email={user_info['email']}&paper_id={paper['doi']}&paper_topics={paper['keywords'][0]}&link={temp_link}"
+            link["link"] = f"https://127.0.01:5000/c?email={user_info['email']}&paper_id={urllib.parse.quote(paper['doi'], safe='')}&paper_topics={paper['keywords'][0]}&link={urllib.parse.quote(temp_link, safe='')}"
 
     # Send the recommended papers via email
     mail.send_email(user_info["name"], user_info["email"], recommended_papers)
@@ -220,6 +221,30 @@ def home():
     user_activity = user_info["activity"]
 
     return render_template("home.html", activity=user_activity)
+
+@app.route('/c', methods=["GET"])
+def clicked():
+    """
+    Handles link tracking.
+
+    Example URL:
+    https://127.0.01:5000/c?email=example@example.com&paper_id=123&paper_topics=topic1,topic2&link=example.com
+    """
+    email = request.args.get("email")
+    paper_id = urllib.parse.unquote(request.args.get("paper_id"))
+    paper_topics = request.args.get("paper_topics")
+    redirect_url = urllib.parse.unquote(request.args.get("link"))
+
+    click_object = {
+        "email": email,
+        "paper_id": paper_id,
+        "paper_topics": paper_topics,
+        "date": datetime.now()
+    }
+
+    users.update_one({"email": email}, {"$push": {"activity": click_object}})
+
+    return redirect(redirect_url)
 
 @app.before_request
 def before_request():
