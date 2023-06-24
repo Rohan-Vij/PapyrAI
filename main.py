@@ -15,6 +15,7 @@ import requests
 
 import random
 import urllib.parse
+import time
 
 # Loading environment variables
 load_dotenv()
@@ -188,7 +189,15 @@ def use_api():
 
     # Summarize the recommended papers using the GPT module
     for paper in recommended_papers:
-        paper["summary"] = gpt_instance.summarize(paper["title"], paper["summary"])
+        summary = gpt_instance.summarize(paper["title"], paper["summary"])
+        while summary == "Unable to fetch the response, Please try again.":
+            summary = gpt_instance.summarize(paper["title"], paper["summary"])
+            time.sleep(0.5)
+            if summary != "Unable to fetch the response, Please try again.":
+                break
+
+        paper["summary"] = summary
+
         for link in paper["links"]:
             temp_link = link["link"]
             # Modify the link to include user-specific data for tracking purposes
