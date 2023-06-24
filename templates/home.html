@@ -13,32 +13,43 @@
       href="{{ url_for('static', filename='styles/startpages.css') }}"
     />
 
+    <script
+      src="{{ url_for('static', filename='js/home.js') }}"
+      type="text/javascript"
+    ></script>
   </head>
   <body>
     <div class="center-container">
       <div class="center-content">
-        <h1 style="margin-bottom: 4px;">Home</h1>
-        <p style="font-size: 11px; color: #a8a8a8;">Logged in as: {{ g.email }}</p>
-        <br>
+        <h1 style="margin-bottom: 4px">Home</h1>
+        <p style="font-size: 11px; color: #a8a8a8; margin-bottom: 1.5rem">
+          Logged in as: {{ g.email }}
+        </p>
+        <br />
+        <h1 id="timer" style="font-size: 40px; margin: 0px">
+          Loading...
+        </h1>
+        <p style="font-size: 11px; color: #a8a8a8; margin-bottom: 1.5rem">
+          Until next week's newsletter.
+        </p>
         <p>Can't wait for next week's newsletter?</p>
         <button id="fetchButton" class="btn">Send one now!</button>
-        <br>
-        <a style="color: #a8a8a8;" href="/logout">Logout</a>
+        <br />
+        <a style="color: #a8a8a8" href="/logout">Logout</a>
       </div>
     </div>
   </body>
   <script>
-    document.getElementById('fetchButton').addEventListener('click', fetchData);
+    document.getElementById("fetchButton").addEventListener("click", fetchData);
 
     function fetchData() {
       alert("This might take a couple seconds, so don't close the tab...");
-      fetch('http://localhost:5000/api')
-        .then(response => alert("Newsletter sent!"))
-        .catch(error => {
+      fetch("http://localhost:5000/api")
+        .then((response) => alert("Newsletter sent!"))
+        .catch((error) => {
           // Handle any errors
-          console.error('Error:', error);
+          console.error("Error:", error);
         });
     }
-
   </script>
 </html>
