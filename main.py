@@ -192,7 +192,7 @@ def use_api():
         for link in paper["links"]:
             temp_link = link["link"]
             # Modify the link to include user-specific data for tracking purposes
-            link["link"] = f"https://127.0.01:5000/c?email={user_info['email']}&paper_id={urllib.parse.quote(paper['doi'], safe='')}&paper_topics={paper['keywords'][0]}&link={urllib.parse.quote(temp_link, safe='')}"
+            link["link"] = f"http://127.0.01:5000/c?email={user_info['email']}&paper_id={urllib.parse.quote(paper['doi'], safe='')}&paper_topics={paper['keywords'][0]}&link={urllib.parse.quote(temp_link, safe='')}"
 
     # Send the recommended papers via email
     mail.send_email(user_info["name"], user_info["email"], recommended_papers)
