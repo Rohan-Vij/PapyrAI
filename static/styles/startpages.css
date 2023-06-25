@@ -25,7 +25,8 @@ form {
   flex-direction: column;
 }
 
-.center-content h1 {
+.center-content h1,
+.center-content img {
   margin-bottom: 3rem;
 }
 
