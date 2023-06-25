@@ -4,6 +4,12 @@
     <title>Signup</title>
 
     <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/favicon.png') }}"
+    />
+
+    <link
       rel="stylesheet"
       type="text/css"
       href="{{ url_for('static', filename='styles/main.css') }}"
@@ -133,7 +139,9 @@
 
           <input type="hidden" id="selected-topics" name="selected-topics" />
 
-          <input type="submit" class="btn" value="Sign Up" />
+          <div class="btn-container">
+            <input type="submit" class="btn" value="Sign Up" />
+          </div>
         </form>
 
         {% if message %}

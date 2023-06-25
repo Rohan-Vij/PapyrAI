@@ -4,6 +4,12 @@
     <title>Index</title>
 
     <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/favicon.png') }}"
+    />
+
+    <link
       rel="stylesheet"
       type="text/css"
       href="{{ url_for('static', filename='styles/main.css') }}"
@@ -19,8 +25,12 @@
     <div class="center-container">
       <div class="center-content">
         <h1>Welcome!</h1>
-        <button class="btn" onclick="location.href = '/login'">Login</button>
-        <button class="btn" onclick="location.href = '/signup'">Sign Up</button>
+          <div class="btn-container">
+              <button class="btn" onclick="location.href = '/login'">Login</button>
+          </div>
+          <div class="btn-container">
+            <button class="btn" onclick="location.href = '/signup'">Sign Up</button>
+          </div>
       </div>
     </div>
   </body>

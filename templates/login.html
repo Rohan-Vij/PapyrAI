@@ -2,6 +2,13 @@
 <html>
   <head>
     <title>Login</title>
+
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/favicon.png') }}"
+    />
+
     <link
       rel="stylesheet"
       type="text/css"
@@ -42,7 +49,9 @@
             <label for="pass" class="form__label">Password</label>
           </div>
 
-          <input class="btn" type="submit" value="Log In" />
+          <div class="btn-container">
+            <input class="btn" type="submit" value="Log In" />
+          </div>
         </form>
 
         {% if message %}

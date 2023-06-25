@@ -4,6 +4,12 @@
     <title>Sign Out</title>
 
     <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/favicon.png') }}"
+    />
+
+    <link
       rel="stylesheet"
       type="text/css"
       href="{{ url_for('static', filename='styles/main.css') }}"
@@ -20,7 +26,9 @@
       <div class="center-content">
         <h1>Sign Out</h1>
         <p>You have been successfully logged out.</p>
-        <button class="btn" onclick="location.href = '/login'">Login</button>
+        <div class="btn-container">
+          <button class="btn" onclick="location.href = '/login'">Login</button>
+        </div>
       </div>
     </div>
   </body>

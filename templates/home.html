@@ -3,6 +3,12 @@
   <head>
     <title>Home</title>
     <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/favicon.png') }}"
+    />
+
+    <link
       rel="stylesheet"
       type="text/css"
       href="{{ url_for('static', filename='styles/main.css') }}"
@@ -22,20 +28,20 @@
     <div class="center-container">
       <div class="center-content">
         <h1 style="margin-bottom: 4px">Home</h1>
-        <p style="font-size: 11px; color: #a8a8a8; margin-bottom: 1.5rem">
+        <p style="font-size: 11px; color: var(--text-accent-color); margin-bottom: 1.5rem">
           Logged in as: {{ g.email }}
         </p>
         <br />
-        <h1 id="timer" style="font-size: 40px; margin: 0px">
-          Loading...
-        </h1>
-        <p style="font-size: 11px; color: #a8a8a8; margin-bottom: 1.5rem">
+        <h1 id="timer" style="font-size: 40px; margin: 0px">Loading...</h1>
+        <p style="font-size: 11px; color: var(--text-accent-color); margin-bottom: 1.5rem">
           Until next week's newsletter.
         </p>
         <p>Can't wait for next week's newsletter?</p>
-        <button id="fetchButton" class="btn">Send one now!</button>
+        <div class="btn-container">
+          <button id="fetchButton" class="btn">Send one now!</button>
+        </div>
         <br />
-        <a style="color: #a8a8a8" href="/logout">Logout</a>
+        <a href="/logout">Logout</a>
       </div>
     </div>
   </body>
