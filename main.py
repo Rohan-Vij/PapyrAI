@@ -3,7 +3,6 @@ import modules.mail as mail
 import modules.gpt as gpt
 from flask import Flask, render_template, request, url_for, redirect, session, g
 from pymongo import MongoClient
-import bcrypt
 
 from datetime import datetime
 from dotenv import load_dotenv
@@ -63,8 +62,7 @@ def signup():
         if users.find_one({"email": email}):
             return render_template('signup.html', message="An account with that email address already exists.")
         else:
-            hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-            users.insert_one({'name': name, 'email': email, 'password': hashed, 'topics': topics, 'activity': []})
+            users.insert_one({'name': name, 'email': email, 'password': password, 'topics': topics, 'activity': []})
             session['email'] = email
 
             return redirect(url_for("home"))
@@ -88,7 +86,7 @@ def login():
 
         email_query = users.find_one({"email": email})
         if email_query:
-            if bcrypt.checkpw(password.encode('utf-8'), email_query['password']):
+            if password = email_query['password']:
                 session['email'] = email
                 return redirect(url_for("home"))
             else:
