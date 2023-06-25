@@ -8,6 +8,8 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 
+from flask import url_for
+
 
 newline = "\n"
 
@@ -63,6 +65,9 @@ def data_to_html(name, data):
       <body style="margin: 0; padding: 0; font-family: 'Roboto', Arial, sans-serif;">
       <div style="width: 100%; max-width: 600px; margin: 0 auto; background-color: #fafafa; padding: 20px; font-family: 'Roboto', Arial, sans-serif;">
         <div style="text-align: center; margin-bottom: 20px;">
+          <div style="width: 100%; background-color: #E0DABA; padding: 10px 0; margin-bottom: 40px;">
+            <img style="height: 5rem;" src="{url_for('static', filename='images/banner.png', _external=True)}" />
+          </div>
           <h1 style="font-size: 24px; color: #3f51b5;">Discover Research Papers with Papyr AI</h1>
           <p style="font-size: 16px; color: #616161;">Stay informed about the latest research in your field!</p>
           <p style="font-size: 14px; color: #616161;">Weekly digest for {name}</p>
