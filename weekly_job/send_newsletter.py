@@ -30,7 +30,10 @@ import random
 import urllib.parse
 import time
 
+# Basic logging setup
+
 import logging
+logging.basicConfig(filename='weekly_job/app.log', encoding='utf-8', level=logging.INFO)
 
 # Loading environment variables
 load_dotenv()
@@ -73,8 +76,6 @@ def send_newsletter(user_info):
         # Retrieve the last five clicked topics
         previously_clicked = user_info["activity"][-5:] if len(user_info["activity"]) > 5 else user_info["activity"]
         # previously_clicked = user_info["activity"]
-
-        print(previously_clicked)
 
         # Extract the topics from the previously clicked papers
         previous_topics = [activity_record["paper_topics"] for activity_record in previously_clicked]
@@ -139,9 +140,13 @@ def send_newsletter(user_info):
         # Summarize the recommended papers using the GPT module
         for paper in recommended_papers:
             summary = gpt_instance.summarize(paper["title"], paper["summary"])
+            attempts = 0
             while summary == "Unable to fetch the response, Please try again.":
+                if attempts == 20:
+                    raise TimeoutError
                 summary = gpt_instance.summarize(paper["title"], paper["summary"])
                 time.sleep(0.5)
+                attempts += 1
                 if summary != "Unable to fetch the response, Please try again.":
                     break
 
@@ -154,14 +159,17 @@ def send_newsletter(user_info):
 
         # Send the recommended papers via email
         mail.send_email(user_info["name"], user_info["email"], recommended_papers)
-    except Exception as e:
-        return f"Error: {e}"
+    except Exception:
+        return f"Error:\n{traceback.format_exc()}"
     else:
         return "Success"
     
+
 for user in all_users:
     result = send_newsletter(user)
     if result.startswith("Error"):
+        print("error")
         logging.error(f"{user['email']} @ {datetime.now()} - {result}")
     else:
+        print("success")
         logging.info(f"{user['email']} @ {datetime.now()} - {result}")
