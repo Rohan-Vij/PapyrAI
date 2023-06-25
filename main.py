@@ -86,7 +86,7 @@ def login():
 
         email_query = users.find_one({"email": email})
         if email_query:
-            if password = email_query['password']:
+            if password == email_query['password']:
                 session['email'] = email
                 return redirect(url_for("home"))
             else:
