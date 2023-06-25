@@ -226,10 +226,8 @@ def home():
     if "email" not in session:
         return redirect(url_for("login"))
 
-    user_info = users.find_one({"email": session["email"]})
-    user_activity = user_info["activity"]
+    return render_template("home.html")
 
-    return render_template("home.html", activity=user_activity)
 
 @app.route('/c', methods=["GET"])
 def clicked():
