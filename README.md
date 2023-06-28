@@ -2,6 +2,15 @@
 
 Experience hassle-free research paper recommendations tailored to your interests. Our automated system sends personalized emails with curated papers, ensuring timely delivery of relevant content.
 
+## Running Locally
+To run locally:
+
+1. `git clone https://github.com/Rohan-Vij/PapyrAI`, or download the code as a ZIP file and extract it
+2. `cd` into the `PapyrAI` folder
+3. Run `pip install -r requirements.txt`. Note that this might take some time.
+4. Run `python .\main.py`
+5. Open `http://localhost:5678` to see the website!
+
 ## How to Contribute
 
 We welcome contributions from the community to help improve and enhance PapyrAI. If you're interested in contributing, please follow the guidelines below:
